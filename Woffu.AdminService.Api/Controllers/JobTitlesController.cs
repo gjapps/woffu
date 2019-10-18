@@ -9,10 +9,10 @@ namespace Woffu.AdminService.Api.Controllers
     /// <summary>
     /// Job title controller
     /// </summary>
-    [Route(Constants.API_BASE_URL + Constants.JOB_TITLE_RESOURCE)]
+    [ApiVersion(Constants.CURRENT_VERSION)]
+    [Route(Constants.API_BASE_URL+ "{version:apiVersion}/" + Constants.JOB_TITLE_RESOURCE)]
     public class JobTitlesController : Controller
     {
-        
         [HttpGet()]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<JobTitle>>> GetJobTitles()

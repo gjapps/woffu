@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace Woffu.AdminService.Api
 {
@@ -22,10 +23,17 @@ namespace Woffu.AdminService.Api
             services.AddControllersWithViews();
             services.AddControllers();
 
+            services.AddApiVersioning(o => {});
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(Constants.CURRENT_VERSION, new OpenApiInfo { Title = Constants.SERVICE_NAME, Version = Constants.CURRENT_VERSION });
             });
         }
 
@@ -53,6 +61,16 @@ namespace Woffu.AdminService.Api
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSwagger(o => {
+                o.RouteTemplate = $"{Constants.API_BASE_URL}swagger/{{documentName}}/swagger.json";
+            });
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint($"/{Constants.API_BASE_URL}swagger/{Constants.CURRENT_VERSION}/swagger.json", $"{Constants.SERVICE_NAME} {Constants.CURRENT_VERSION}");
+                c.RoutePrefix = $"{Constants.API_BASE_URL}swagger";
             });
 
             app.UseSpa(spa =>
