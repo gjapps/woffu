@@ -1,4 +1,4 @@
-﻿using Woffu.AdminService.Models.JobTitlesServiceDto;
+﻿using Woffu.AdminService.Models.JobTitlesService;
 
 namespace Woffu.AdminService.Tests
 {

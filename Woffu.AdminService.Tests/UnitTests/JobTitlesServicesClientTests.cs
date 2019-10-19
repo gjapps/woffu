@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Woffu.AdminService.Api.Clients;
 using Woffu.AdminService.Tests.Utils;
 using Xunit;
-using Woffu.AdminService.Models.JobTitlesServiceDto;
+using Woffu.AdminService.Models.JobTitlesService;
 using System.Collections.Generic;
 
 namespace Woffu.AdminService.Tests.UnitTests

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Woffu.AdminService.Models.JobTitlesServiceDto;
+using Woffu.AdminService.Models.JobTitlesService;
 
 namespace Woffu.AdminService.Api.Interfaces
 {

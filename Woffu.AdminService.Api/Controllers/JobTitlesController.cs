@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Woffu.AdminService.Api.Interfaces;
-using Woffu.AdminService.Models.JobTitlesServiceDto;
+using Woffu.AdminService.Models.JobTitlesService;
 
 namespace Woffu.AdminService.Api.Controllers
 {

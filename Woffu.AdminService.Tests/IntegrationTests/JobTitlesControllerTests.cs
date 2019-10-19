@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Woffu.AdminService.Api.Controllers;
 using Woffu.AdminService.Api.Interfaces;
-using Woffu.AdminService.Models.JobTitlesServiceDto;
+using Woffu.AdminService.Models.JobTitlesService;
 using Woffu.AdminService.Tests.Utils;
 using Woffu.AdminService.Api;
 using Xunit;

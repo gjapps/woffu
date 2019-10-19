@@ -1,4 +1,4 @@
-﻿namespace Woffu.AdminService.Models.JobTitlesServiceDto
+﻿namespace Woffu.AdminService.Models.JobTitlesService
 {
     /// <summary>
     /// Job titles model

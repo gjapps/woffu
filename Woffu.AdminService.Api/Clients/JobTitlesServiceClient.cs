@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Woffu.AdminService.Api.Interfaces;
-using Woffu.AdminService.Models.JobTitlesServiceDto;
+using Woffu.AdminService.Models.JobTitlesService;
 
 namespace Woffu.AdminService.Api.Clients
 {
