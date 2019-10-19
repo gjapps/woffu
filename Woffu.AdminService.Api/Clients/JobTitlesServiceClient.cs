@@ -81,22 +81,20 @@ namespace Woffu.AdminService.Api.Clients
             var response = await httpClient.SendAsync(request);
             ValidateSuccessStatus(response);
 
-            JobTitle ret = null;
-            ret = JsonConvert.DeserializeObject<JobTitle>(await response.Content.ReadAsStringAsync());
+            JobTitle ret = JsonConvert.DeserializeObject<JobTitle>(await response.Content.ReadAsStringAsync());
             return ret;
         }
 
         public async Task<JobTitle> UpdateJobTitle(int jobTitleId, JobTitle jobTitle)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put,jobTitle.ToString());
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, jobTitleId.ToString());
             request.Headers.Authorization = new AuthenticationHeaderValue(Constants.BASIC, authorization);
             request.Content = new StringContent(JsonConvert.SerializeObject(jobTitle), Encoding.UTF8, "application/json");
 
             var response = await httpClient.SendAsync(request);
             ValidateSuccessStatus(response);
 
-            JobTitle ret = null;
-            ret = JsonConvert.DeserializeObject<JobTitle>(await response.Content.ReadAsStringAsync());
+            JobTitle ret = JsonConvert.DeserializeObject<JobTitle>(await response.Content.ReadAsStringAsync());
             return ret;
         }
 

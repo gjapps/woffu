@@ -24,16 +24,16 @@ namespace Woffu.AdminService.Tests.UnitTests
     {
         AutoMock mockProvider;
 
-        public TestServer Server { get; private set; }
-        public HttpClient Client { get; private set; }
+        public TestServer server { get; private set; }
+        public HttpClient client { get; private set; }
         public JobTitlesControllerTests() {
             mockProvider = AutoMock.GetLoose();
-            Server = new TestServer(new WebHostBuilder().UseStartup<StartupTest>().ConfigureServices((services) => {
+            server = new TestServer(new WebHostBuilder().UseStartup<StartupTest>().ConfigureServices((services) => {
                 var clientMock = mockProvider.Mock<IJobTitlesServiceClient>();
                 services.AddSingleton(clientMock.Object);
             }));
 
-            Client = Server.CreateClient();
+            client = server.CreateClient();
         }
 
         public static IEnumerable<object[]> GetJobTitlesTestData =>
@@ -54,7 +54,7 @@ namespace Woffu.AdminService.Tests.UnitTests
             request.Headers.Add(Constants.AUTHORIZATION, $"{Constants.BASIC} user:pass");
 
             //Act
-            var response = await Client.SendAsync(request);
+            var response = await client.SendAsync(request);
 
             //Assert
             Assert.Equal(expectedStatus, response.StatusCode);
@@ -78,7 +78,7 @@ namespace Woffu.AdminService.Tests.UnitTests
             request.Headers.Add(Constants.AUTHORIZATION, $"{Constants.BASIC} user:pass");
             
             //Act
-            var response = await Client.SendAsync(request);
+            var response = await client.SendAsync(request);
 
             //Assert
             Assert.Equal(expectedStatus, response.StatusCode);
@@ -96,7 +96,7 @@ namespace Woffu.AdminService.Tests.UnitTests
             request.Content = new StringContent(JsonConvert.SerializeObject(jobTitle), Encoding.UTF8, "application/json");
 
             //Act
-            var response = await Client.SendAsync(request);
+            var response = await client.SendAsync(request);
 
             //Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -114,7 +114,7 @@ namespace Woffu.AdminService.Tests.UnitTests
             request.Content = new StringContent(JsonConvert.SerializeObject(jobTitle), Encoding.UTF8, "application/json");
 
             //Act
-            var response = await Client.SendAsync(request);
+            var response = await client.SendAsync(request);
 
             //Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -132,7 +132,7 @@ namespace Woffu.AdminService.Tests.UnitTests
             request.Content = new StringContent(JsonConvert.SerializeObject(jobTitle), Encoding.UTF8, "application/json");
 
             //Act
-            var response = await Client.SendAsync(request);
+            var response = await client.SendAsync(request);
 
             //Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
