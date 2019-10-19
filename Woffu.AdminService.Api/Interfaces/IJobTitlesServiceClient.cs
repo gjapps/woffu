@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Woffu.AdminService.Models.JobTitlesServiceDto;
 
@@ -34,20 +32,20 @@ namespace Woffu.AdminService.Api.Interfaces
         /// </summary>
         /// <param name="jobtitle"></param>
         /// <returns></returns>
-        Task CreateJobTitle(JobTitleBase jobtitle);
+        Task<JobTitle> CreateJobTitle(JobTitle jobtitle);
 
         /// <summary>
         /// Update job title
         /// </summary>
         /// <param name="jobtitle"></param>
         /// <returns></returns>
-        Task UpdateJobTitle(JobTitle jobtitle);
+        Task<JobTitle> UpdateJobTitle(int jobTitleId,JobTitle jobtitle);
 
         /// <summary>
         /// Delete job title
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<JobTitle> DeleteJobTitle(int id);
+        Task DeleteJobTitle(int id);
     }
 }

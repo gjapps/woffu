@@ -77,7 +77,7 @@ namespace Woffu.AdminService.Api
                 }
 
                 var result = JsonConvert.SerializeObject(exception.Message);
-                context.Response.ContentType = "application/json";
+                context.Response.ContentType = "text/html";
                 await context.Response.WriteAsync(result);
             }));
 

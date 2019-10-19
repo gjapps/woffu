@@ -1,12 +1,9 @@
-﻿using System;
-using Woffu.AdminService.Models.JobTitlesServiceDto;
-
-namespace Woffu.AdminService.Models.JobTitlesServiceDto
+﻿namespace Woffu.AdminService.Models.JobTitlesServiceDto
 {
     /// <summary>
     /// Job titles model
     /// </summary>
-    public class JobTitle: JobTitleBase
+    public class JobTitle
     {
         /// <summary>
         /// Job title id
@@ -17,5 +14,20 @@ namespace Woffu.AdminService.Models.JobTitlesServiceDto
         /// Company id
         /// </summary>
         public int CompanyId { get; set; }
+     
+        /// <summary>
+        /// JotTitleKey
+        /// </summary>
+        public string JobTitleKey { get; set; }
+        
+        /// <summary>
+        /// Name
+        /// </summary>
+        public string Name { get; set; }
+
+       /// <summary>
+       /// Color
+       /// </summary>
+        public string Color { get; set; }
     }
 }

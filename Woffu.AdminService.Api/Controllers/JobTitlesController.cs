@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Woffu.AdminService.Api.Interfaces;
-using Woffu.AdminService.Models.WebClientDto;
+using Woffu.AdminService.Models.JobTitlesServiceDto;
 
 namespace Woffu.AdminService.Api.Controllers
 {
     /// <summary>
     /// Job title controller
     /// </summary>
+    [ApiController]
     [ApiVersion(Constants.CURRENT_VERSION)]
     [Authorize]
     [Route(Constants.API_BASE_URL+ "{version:apiVersion}/" + Constants.JOB_TITLE_RESOURCE)]
@@ -33,34 +34,48 @@ namespace Woffu.AdminService.Api.Controllers
             if (jobTitles is null) {
                return NotFound();
             }
+
             return Ok(jobTitles);
         }
 
         [HttpGet("{jobTitleId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult<JobTitle>> GetJobTitle(int jobTitleId)
         {
-            return Ok();
+            this.jobTitlesServiceClient.Authorization = HttpContext.Request.Headers[Constants.AUTHORIZATION].ToString();
+            var jobTitle = await jobTitlesServiceClient.GetJobTitle(jobTitleId);
+            if (jobTitle is null)
+            {
+                return NotFound();
+            }
+            return Ok(jobTitle);
         }
 
-        [HttpPost("{jobTitleId}")]
+        [HttpPost()]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> CreateJobTitle(int jobTitleId)
+        public async Task<ActionResult<JobTitle>> CreateJobTitle([FromBody] JobTitle jobTitle)
         {
-            return Ok();
+            this.jobTitlesServiceClient.Authorization = HttpContext.Request.Headers[Constants.AUTHORIZATION].ToString();
+            var createdJobTitle= await jobTitlesServiceClient.CreateJobTitle(jobTitle);
+            return Created("",createdJobTitle);
         }
 
         [HttpPut("{jobTitleId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> UpdateJobTitle(int jobTitleId)
+        public async Task<ActionResult<JobTitle>> UpdateJobTitle(int jobTitleId, [FromBody] JobTitle jobTitle)
         {
-            return Ok();
+            this.jobTitlesServiceClient.Authorization = HttpContext.Request.Headers[Constants.AUTHORIZATION].ToString();
+            var updatedJobTitle = await jobTitlesServiceClient.UpdateJobTitle(jobTitleId, jobTitle);
+            return new OkObjectResult(updatedJobTitle);
         }
 
         [HttpDelete("{jobTitleId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteJobTitle(int jobTitleId)
         {
+            this.jobTitlesServiceClient.Authorization = HttpContext.Request.Headers[Constants.AUTHORIZATION].ToString();
+            await jobTitlesServiceClient.DeleteJobTitle(jobTitleId);
             return Ok();
         }
     }
