@@ -11,5 +11,10 @@
 
         public const string CURRENT_VERSION = V1;
         public const string V1 = "1.0";
+
+        public const string JOB_TITLE_SERVICE_BASE_URL = "JobTitleServiceUrl";
+
+        public const string AUTHORIZATION = "Authorization";
+        public const string BASIC = "Basic";
     }
 }

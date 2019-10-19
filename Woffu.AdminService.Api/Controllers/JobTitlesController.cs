@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Woffu.AdminService.Api.Interfaces;
 using Woffu.AdminService.Models.WebClientDto;
 
 namespace Woffu.AdminService.Api.Controllers
@@ -10,15 +12,28 @@ namespace Woffu.AdminService.Api.Controllers
     /// Job title controller
     /// </summary>
     [ApiVersion(Constants.CURRENT_VERSION)]
+    [Authorize]
     [Route(Constants.API_BASE_URL+ "{version:apiVersion}/" + Constants.JOB_TITLE_RESOURCE)]
     public class JobTitlesController : Controller
     {
+        readonly IJobTitlesServiceClient jobTitlesServiceClient;
+
+        public JobTitlesController(IJobTitlesServiceClient jobTitlesServiceClient) {
+            this.jobTitlesServiceClient = jobTitlesServiceClient;
+        }
+
         [HttpGet()]
         [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult<IEnumerable<JobTitle>>> GetJobTitles()
         {
-            var ret = new List<JobTitle>();
-            return  Ok(ret);
+            this.jobTitlesServiceClient.Authorization = HttpContext.Request.Headers[Constants.AUTHORIZATION].ToString();
+            var jobTitles = await jobTitlesServiceClient.GetJobTitles();
+            
+            if (jobTitles is null) {
+               return NotFound();
+            }
+            return Ok(jobTitles);
         }
 
         [HttpGet("{jobTitleId}")]
