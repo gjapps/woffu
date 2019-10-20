@@ -22,8 +22,4 @@
     <ProjectReference Include="..\Woffu.AdminService.Api\Woffu.AdminService.Api.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="EndToEndTests\" />
-  </ItemGroup>
-
 </Project>

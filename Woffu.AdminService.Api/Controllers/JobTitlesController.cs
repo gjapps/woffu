@@ -28,7 +28,7 @@ namespace Woffu.AdminService.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult<IEnumerable<JobTitle>>> GetJobTitles()
         {
-            this.jobTitlesServiceClient.Authorization = HttpContext.Request.Headers[Constants.AUTHORIZATION].ToString();
+            jobTitlesServiceClient.Authorization = HttpContext.Request.Headers[Constants.AUTHORIZATION].ToString();
             var jobTitles = await jobTitlesServiceClient.GetJobTitles();
             
             if (jobTitles is null) {
@@ -43,7 +43,7 @@ namespace Woffu.AdminService.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult<JobTitle>> GetJobTitle(int jobTitleId)
         {
-            this.jobTitlesServiceClient.Authorization = HttpContext.Request.Headers[Constants.AUTHORIZATION].ToString();
+            jobTitlesServiceClient.Authorization = HttpContext.Request.Headers[Constants.AUTHORIZATION].ToString();
             var jobTitle = await jobTitlesServiceClient.GetJobTitle(jobTitleId);
             if (jobTitle is null)
             {
@@ -56,7 +56,7 @@ namespace Woffu.AdminService.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<ActionResult<JobTitle>> CreateJobTitle([FromBody] JobTitle jobTitle)
         {
-            this.jobTitlesServiceClient.Authorization = HttpContext.Request.Headers[Constants.AUTHORIZATION].ToString();
+            jobTitlesServiceClient.Authorization = HttpContext.Request.Headers[Constants.AUTHORIZATION].ToString();
             var createdJobTitle= await jobTitlesServiceClient.CreateJobTitle(jobTitle);
             return Created("",createdJobTitle);
         }
@@ -65,7 +65,7 @@ namespace Woffu.AdminService.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult<JobTitle>> UpdateJobTitle(int jobTitleId, [FromBody] JobTitle jobTitle)
         {
-            this.jobTitlesServiceClient.Authorization = HttpContext.Request.Headers[Constants.AUTHORIZATION].ToString();
+            jobTitlesServiceClient.Authorization = HttpContext.Request.Headers[Constants.AUTHORIZATION].ToString();
             var updatedJobTitle = await jobTitlesServiceClient.UpdateJobTitle(jobTitleId, jobTitle);
             return new OkObjectResult(updatedJobTitle);
         }
@@ -74,7 +74,7 @@ namespace Woffu.AdminService.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteJobTitle(int jobTitleId)
         {
-            this.jobTitlesServiceClient.Authorization = HttpContext.Request.Headers[Constants.AUTHORIZATION].ToString();
+            jobTitlesServiceClient.Authorization = HttpContext.Request.Headers[Constants.AUTHORIZATION].ToString();
             await jobTitlesServiceClient.DeleteJobTitle(jobTitleId);
             return Ok();
         }

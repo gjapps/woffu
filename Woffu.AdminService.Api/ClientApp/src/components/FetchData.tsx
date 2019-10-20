@@ -3,62 +3,111 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 import { ApplicationState } from '../store';
-import * as WeatherForecastsStore from '../store/WeatherForecasts';
+import * as JobTitleStore from '../store/JobTitles';
+import Input from 'reactstrap/lib/Input';
 
 // At runtime, Redux will merge together...
-type WeatherForecastProps =
-  WeatherForecastsStore.WeatherForecastsState // ... state we've requested from the Redux store
-  & typeof WeatherForecastsStore.actionCreators // ... plus action creators we've requested
+type JobTitlesProps =
+  JobTitleStore.JobTitlesState // ... state we've requested from the Redux store
+  & typeof JobTitleStore.actionCreators // ... plus action creators we've requested
   & RouteComponentProps<{ startDateIndex: string }>; // ... plus incoming routing parameters
 
 
-class FetchData extends React.PureComponent<WeatherForecastProps> {
+class FetchData extends React.PureComponent<JobTitlesProps> {
   // This method is called when the component is first added to the document
   public componentDidMount() {
-    this.ensureDataFetched();
   }
 
   // This method is called when the route parameters change
   public componentDidUpdate() {
-    this.ensureDataFetched();
   }
 
-  public render() {
-    return (
-      <React.Fragment>
-        <h1 id="tabelLabel">Weather forecast</h1>
-        <p>This component demonstrates fetching data from the server and working with URL parameters.</p>
-        {this.renderForecastsTable()}
-        {this.renderPagination()}
-      </React.Fragment>
-    );
-  }
+    public render() {
+        if (this.props.loggedIn === true) {
+            return (
+                <React.Fragment>
+                    <h1 id="tabelLabel">Administrador de cargos</h1>
+                    <p>Usa esta página para modificar los cargos en tu empresa</p>
+                    <button type="button"
+                        className="btn btn-primary"
+                        onClick={() => {
+                          this.props.requestJobTitles(this.props.token);
+                        }}>
+                        Refresh
+                    </button>
+                    {this.renderTable()}
+                    {this.renderPagination()}
+                </React.Fragment>
+            );
+        } else {
+            return (<React.Fragment>
+                <h1 id="loginLabel">Login</h1>
+                <input type="text" name="Token" id="loginInput" onChange={this.handleChange.bind(this)} />
+                <button type="button"
+                    className="btn btn-primary btn-lg"
+                    onClick={() => {
+                        this.props.requestJobTitles(this.props.token);
+                    }}>
+                    Login
+                </button>
+            </React.Fragment>);
+        }
+    }
 
-  private ensureDataFetched() {
-    const startDateIndex = parseInt(this.props.match.params.startDateIndex, 10) || 0;
-    this.props.requestWeatherForecasts(startDateIndex);
-  }
 
-  private renderForecastsTable() {
+    private handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        this.props.login(e.target.value);
+}
+
+    private renderTable() {
     return (
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
+            <th>Cargo</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          {this.props.forecasts.map((forecast: WeatherForecastsStore.WeatherForecast) =>
-            <tr key={forecast.date}>
-              <td>{forecast.date}</td>
-              <td>{forecast.temperatureC}</td>
-              <td>{forecast.temperatureF}</td>
-              <td>{forecast.summary}</td>
+          {this.props.jTitles.map((jotTitle: JobTitleStore.JobTitle) =>
+            <tr key={jotTitle.jobTitleId}>
+                  <td>
+                      <input type="text" name="Token" id="loginInput" defaultValue={jotTitle.name}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          jotTitle.name = e.target.value
+                      }} /></td>
+                  <td>
+                      <button type="button"
+                          className="btn btn-secondary"
+                          onClick={() => {
+                              this.props.update(jotTitle.jobTitleId,jotTitle.name);
+                          }}>
+                          Update
+                      </button>
+                      <button type="button"
+                          className="btn btn-danger"
+                          onClick={() => {
+                              this.props.delete(jotTitle.jobTitleId);
+                          }}>
+                          Delete
+                      </button>
+                  </td>
             </tr>
-          )}
+                )}
+                <td>
+                    <input type="text" name="Token" id="addInput" value={this.props.newName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        this.props.add(e.target.value,false);
+                    }} />
+                </td>
+                    <td>
+                <button type="button"
+                        className="btn btn-success"
+                        onClick={() => {
+                            this.props.add(this.props.newName, true);
+                        }}>
+                        Add
+                </button>
+                </td>
         </tbody>
       </table>
     );
@@ -79,6 +128,6 @@ class FetchData extends React.PureComponent<WeatherForecastProps> {
 }
 
 export default connect(
-  (state: ApplicationState) => state.weatherForecasts, // Selects which state properties are merged into the component's props
-  WeatherForecastsStore.actionCreators // Selects which action creators are merged into the component's props
+  (state: ApplicationState) => state.jobTitles, // Selects which state properties are merged into the component's props
+  JobTitleStore.actionCreators // Selects which action creators are merged into the component's props
 )(FetchData as any);

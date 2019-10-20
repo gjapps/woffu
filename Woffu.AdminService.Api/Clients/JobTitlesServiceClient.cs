@@ -27,9 +27,9 @@ namespace Woffu.AdminService.Api.Clients
         public string Authorization {
             get { return authorization; }
             set {
-               authorization= value.Replace($"{Constants.BASIC} ", string.Empty);
-               var bytes= Encoding.ASCII.GetBytes(authorization);
-               authorization =  Convert.ToBase64String(bytes);
+                authorization = value.Replace($"{Constants.BASIC} ", string.Empty);
+                var bytes = Encoding.ASCII.GetBytes(authorization);
+                authorization = Convert.ToBase64String(bytes);
             }
         }
         public async Task<IEnumerable<JobTitle>> GetJobTitles()
@@ -54,7 +54,7 @@ namespace Woffu.AdminService.Api.Clients
 
         public async Task<JobTitle> GetJobTitle(int jobTitleId)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,jobTitleId.ToString());
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"{httpClient.BaseAddress}/{jobTitleId.ToString()}");
 
             request.Headers.Authorization = new AuthenticationHeaderValue(Constants.BASIC, authorization);
 
@@ -87,7 +87,7 @@ namespace Woffu.AdminService.Api.Clients
 
         public async Task<JobTitle> UpdateJobTitle(int jobTitleId, JobTitle jobTitle)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, jobTitleId.ToString());
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"{ httpClient.BaseAddress}/{ jobTitleId.ToString()}");
             request.Headers.Authorization = new AuthenticationHeaderValue(Constants.BASIC, authorization);
             request.Content = new StringContent(JsonConvert.SerializeObject(jobTitle), Encoding.UTF8, "application/json");
 
@@ -100,8 +100,8 @@ namespace Woffu.AdminService.Api.Clients
 
         public async Task DeleteJobTitle(int jobTitleId)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, jobTitleId.ToString());
-            request.Headers.Authorization = new AuthenticationHeaderValue(Constants.BASIC, authorization);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete,$"{ httpClient.BaseAddress}/{ jobTitleId.ToString() }");
+            request.Headers.Authorization = new AuthenticationHeaderValue(Constants.BASIC,authorization);
 
             var response = await httpClient.SendAsync(request);
             ValidateSuccessStatus(response);
